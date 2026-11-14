@@ -1,0 +1,641 @@
+<title>Media Perdana</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: masthead tebal bertumpuk (MEDIA / PERDANA) dengan ornamen daun, ticker berita berjalan,
+   berita utama berlatar ilustrasi + daftar terbaru bergambar, kartu rubrik dengan ilustrasi per rubrik,
+   agenda dengan hitung mundur, karya siswa berwarna, redaksi berinisial, form kirim karya. */
+:root {
+  --bg: #F1F6F0;
+  --surface: #FFFFFF;
+  --fg: #13241B;
+  --muted: #4F6357;
+  --line: #CFE0D2;
+  --brand: #17603F;
+  --brand-ink: #FFFFFF;
+  --tint: #DCEEDF;
+  --band: #0D3B28;
+  --band2: #0F4A31;
+  --band-fg: #EAF5EC;
+  --band-muted: #A9C7B5;
+  --lime: #CDE87A;
+  --lime-ink: #12301F;
+  --focus: #0B7A4B;
+  --shadow: rgba(13, 59, 40, .20);
+  --mark: rgba(205, 232, 122, .8);
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1610; --surface: #12231A; --fg: #E6F0E8; --muted: #9DB4A5; --line: #24372C;
+    --brand: #62C08D; --brand-ink: #08140E; --tint: #1A3426; --band: #08241A; --band2: #0C3324;
+    --band-muted: #8FB09C; --focus: #8EDDB1; --shadow: rgba(0, 0, 0, .55); --mark: rgba(205, 232, 122, .26);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1610; --surface: #12231A; --fg: #E6F0E8; --muted: #9DB4A5; --line: #24372C;
+  --brand: #62C08D; --brand-ink: #08140E; --tint: #1A3426; --band: #08241A; --band2: #0C3324;
+  --band-muted: #8FB09C; --focus: #8EDDB1; --shadow: rgba(0, 0, 0, .55); --mark: rgba(205, 232, 122, .26);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.6; margin: 0; }
+body.lock { overflow: hidden; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.label { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; }
+
+/* Ilustrasi rubrik */
+.art { display: block; width: 100%; height: 100%; }
+.art .a0 { fill: var(--a0); } .art .a1 { fill: var(--a1); } .art .a2 { fill: var(--a2); } .art .a3 { fill: var(--a3); }
+.art .s1 { stroke: var(--a1); stroke-width: 5; stroke-linecap: round; fill: none; }
+.art .s2 { stroke: var(--a2); stroke-width: 5; stroke-linecap: round; fill: none; }
+.art .s3 { stroke: var(--a3); stroke-width: 4; stroke-linecap: round; fill: none; }
+.cat-ws { --a0: #0F4A31; --a1: #1F7A4D; --a2: #CDE87A; --a3: #E8F5EA; }
+.cat-pr { --a0: #CDE87A; --a1: #0F4A31; --a2: #17603F; --a3: #F6FBE6; }
+.cat-ek { --a0: #1F7A4D; --a1: #0D3B28; --a2: #9ED9B5; --a3: #CDE87A; }
+.cat-li { --a0: #DCEEDF; --a1: #17603F; --a2: #62C08D; --a3: #0D3B28; }
+.cat-op { --a0: #0D3B28; --a1: #62C08D; --a2: #CDE87A; --a3: #EAF5EC; }
+
+/* Masthead */
+.band { background: var(--band); color: var(--band-fg); }
+.mast { position: relative; overflow: hidden; }
+.deco { position: absolute; right: -30px; top: 0; height: 100%; width: min(560px, 80%); pointer-events: none; opacity: .9; }
+.mast .wrap { position: relative; }
+.topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; border-bottom: 1px solid rgba(255,255,255,.14); }
+.topline .label { color: var(--band-muted); min-width: 0; }
+.theme-btn { background: transparent; border: 1px solid rgba(255,255,255,.4); color: var(--band-fg); border-radius: 999px; padding: 6px 14px; font-size: 14px; cursor: pointer; white-space: nowrap; }
+.theme-btn:hover { background: rgba(255,255,255,.12); }
+.masthead { padding-block: 30px 14px; display: grid; gap: 14px; }
+.kicker { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 13px; color: var(--lime); }
+.kicker::before { content: ""; width: 34px; height: 3px; background: var(--lime); }
+.masthead h1 { font-size: clamp(54px, 14vw, 140px); font-weight: 800; letter-spacing: -.035em; line-height: .88; text-transform: uppercase; }
+.masthead h1 span { display: block; }
+.masthead h1 .o { color: transparent; -webkit-text-stroke: 2px var(--lime); }
+.masthead h1 .s { color: var(--band-fg); }
+.masthead .tag { color: var(--band-muted); max-width: 36ch; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 12px 22px; }
+.nav a { text-decoration: none; font-size: 15px; font-weight: 600; padding: 7px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.28); transition: background .15s, color .15s; }
+.nav a:hover { background: var(--lime); color: var(--lime-ink); border-color: var(--lime); }
+
+/* Ticker */
+.ticker { background: var(--lime); color: var(--lime-ink); overflow: hidden; display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,.08); }
+.ticker .lead { flex: none; background: var(--band2); color: var(--lime); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 12px 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); position: relative; z-index: 1; }
+.ticker .view { overflow: hidden; flex: 1; min-width: 0; }
+.ticker .track { display: flex; width: max-content; animation: run 55s linear infinite; }
+.ticker .set { display: flex; flex: none; }
+.ticker .set span { white-space: nowrap; padding: 10px 26px 10px 0; font-weight: 600; font-size: 15px; display: inline-flex; align-items: center; gap: 26px; }
+.ticker .set span::after { content: ""; width: 7px; height: 7px; background: var(--band2); transform: rotate(45deg); }
+@keyframes run { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .ticker .track { animation: none; width: auto; flex-wrap: wrap; }
+  .ticker .dup { display: none; }
+  .ticker .set { flex-wrap: wrap; padding-left: 16px; }
+}
+
+/* Seksi */
+section { padding-block: 48px 8px; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 6px 20px; margin-bottom: 22px; }
+.sec-head h2 { font-size: clamp(30px, 5vw, 44px); font-weight: 800; letter-spacing: -.02em; }
+.mk { background: linear-gradient(transparent 60%, var(--mark) 60%); padding: 0 4px; margin-left: -4px; }
+.sec-head p { color: var(--muted); font-size: 15px; }
+.sample-note { margin-top: 28px; padding: 12px 16px; background: var(--tint); border-radius: 8px; font-size: 14px; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 28px; }
+.feature { position: relative; text-align: left; border: 0; cursor: pointer; border-radius: 12px; padding: 0; min-height: 400px; overflow: hidden; color: #F1F8F2; display: block; box-shadow: 0 14px 34px -18px var(--shadow); }
+.feature .bgart { position: absolute; inset: 0; transition: transform .6s; }
+.feature::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,38,26,.96) 8%, rgba(8,38,26,.78) 46%, rgba(8,38,26,.12) 100%); }
+.feature:hover .bgart { transform: scale(1.05); }
+.feature .in { position: absolute; inset: 0; z-index: 1; padding: 32px 30px; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; max-width: 640px; }
+.feature h2 { font-size: clamp(28px, 4.4vw, 46px); font-weight: 800; letter-spacing: -.015em; }
+.feature:hover h2 { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; text-decoration-color: var(--lime); }
+.feature p { color: #D3E6D8; max-width: 50ch; }
+.feature .meta { color: #B7D2BF; font-size: 14px; }
+.pill { align-self: flex-start; background: var(--lime); color: var(--lime-ink); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 4px 11px; border-radius: 999px; }
+.latest h3 { font-size: 13px; font-family: var(--font-body); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding-bottom: 10px; border-bottom: 3px solid var(--brand); }
+.latest ul { list-style: none; margin: 0; padding: 0; }
+.latest li { border-bottom: 1px solid var(--line); }
+.latest button { width: 100%; text-align: left; background: none; border: 0; cursor: pointer; padding: 14px 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; align-items: center; }
+.latest .th { width: 76px; height: 76px; border-radius: 10px; overflow: hidden; transition: transform .2s; }
+.latest button:hover .th { transform: rotate(-3deg) scale(1.05); }
+.latest button:hover .t { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.latest .c { display: block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); }
+.latest .t { display: block; font-family: var(--font-display); font-size: 17px; font-weight: 700; line-height: 1.25; }
+.latest .d { display: block; font-size: 13px; color: var(--muted); }
+
+/* Berita */
+.toolbar { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: end; margin-bottom: 18px; }
+.search { flex: 1 1 260px; min-width: 0; }
+.search input { width: 100%; background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 11px 18px; }
+.search input:focus { border-color: var(--brand); outline: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: var(--surface); border: 1px solid var(--line); color: var(--fg); border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .15s, transform .15s; }
+.chip:hover { border-color: var(--brand); transform: translateY(-1px); }
+.chip[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 700; }
+.count { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; transition: transform .2s, box-shadow .2s; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 16px 28px -16px var(--shadow); }
+.card .thumb { position: relative; aspect-ratio: 16 / 9; }
+.card .thumb .pill { position: absolute; left: 12px; top: 12px; }
+.card .txt { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card h3 { font-size: 20px; font-weight: 700; }
+.card h3 button { all: unset; cursor: pointer; }
+.card h3 button:hover { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.card h3 button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.card p { color: var(--muted); font-size: 15px; }
+.card .meta { margin-top: auto; font-size: 13px; color: var(--muted); padding-top: 8px; border-top: 1px solid var(--line); }
+.empty { padding: 28px; border: 2px dashed var(--line); border-radius: 12px; color: var(--muted); }
+
+/* Agenda */
+.agenda { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.agenda li { display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 12px 18px 12px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; transition: border-color .2s, transform .2s; }
+.agenda li:hover { border-color: var(--brand); transform: translateX(4px); }
+.date { background: var(--brand); color: var(--brand-ink); border-radius: 8px; text-align: center; padding: 10px 6px; line-height: 1; }
+.date b { display: block; font-family: var(--font-display); font-size: 36px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.date span { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; }
+.agenda h3 { font-size: 19px; font-weight: 700; }
+.agenda p { font-size: 14px; color: var(--muted); }
+.side { display: grid; gap: 6px; justify-items: end; }
+.tag { font-size: 12px; font-weight: 700; padding: 3px 11px; border-radius: 999px; background: var(--tint); white-space: nowrap; }
+.rel { font-size: 13px; font-weight: 600; color: var(--brand); white-space: nowrap; }
+
+/* Karya */
+.works { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.work { border-radius: 12px; padding: 26px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; position: relative; overflow: hidden; }
+.work::before { content: "\201C"; font-family: var(--font-display); font-weight: 800; font-size: 120px; line-height: .7; opacity: .22; position: absolute; right: 16px; top: 22px; }
+.work .label { opacity: .8; }
+.work h3 { font-size: 24px; font-weight: 800; }
+.work .text { white-space: pre-line; }
+.work .by { margin-top: auto; font-size: 14px; opacity: .8; padding-top: 6px; }
+.w0 { background: var(--tint); color: var(--fg); }
+.w1 { background: #0F4A31; color: #EAF5EC; }
+.w2 { background: #CDE87A; color: #12301F; }
+
+/* Redaksi */
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.member { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.avatar { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 18px; }
+.av0 { background: #0F4A31; color: #CDE87A; } .av1 { background: #CDE87A; color: #12301F; } .av2 { background: #62C08D; color: #08140E; }
+.member .role { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.member .name { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.2; }
+
+/* Form */
+.send { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+.send form { display: grid; gap: 14px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: 14px; font-weight: 600; }
+.field input, .field select, .field textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand); outline: none; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.btn { background: var(--brand); color: var(--brand-ink); border: 0; border-radius: 999px; padding: 12px 24px; font-weight: 700; cursor: pointer; justify-self: start; transition: transform .15s, filter .15s; }
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn.alt { background: transparent; color: var(--fg); border: 1px solid var(--line); padding: 8px 16px; }
+.how { display: grid; gap: 12px; }
+.how ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.result { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 10px; }
+.result pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: var(--font-body); font-size: 14px; }
+.mail { user-select: all; font-weight: 700; }
+
+/* Footer */
+footer { margin-top: 64px; }
+footer .wrap { padding-block: 36px 30px; display: grid; gap: 14px; }
+footer .big { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 9vw, 84px); line-height: .9; letter-spacing: -.03em; text-transform: uppercase; }
+footer .big span { color: var(--lime); }
+footer .small { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 14px; color: var(--band-muted); }
+
+/* Pembaca */
+.reader { position: fixed; inset: 0; z-index: 50; background: rgba(6, 20, 13, .66); display: flex; justify-content: center; align-items: flex-start; overflow-y: auto;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.reader[hidden] { display: none; }
+.paper { background: var(--surface); width: 100%; max-width: 720px; border-radius: 14px; overflow: hidden; margin-block: 16px; }
+.paper .hd { height: 150px; position: relative; }
+.paper .hd .close { position: absolute; right: 14px; top: 14px; background: var(--surface); }
+.paper .in { padding: 24px clamp(18px, 4vw, 40px) 36px; }
+.paper .c { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); }
+.paper h2 { font-size: clamp(28px, 5vw, 40px); font-weight: 800; margin: 6px 0 10px; }
+.paper .byline { color: var(--muted); font-size: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+.paper .body { display: grid; gap: 16px; max-width: 65ch; font-size: 17px; }
+
+@media (max-width: 760px) {
+  .hero, .send { grid-template-columns: minmax(0, 1fr); }
+  .send { padding: 20px 16px; }
+  .feature { min-height: 340px; }
+  .feature .in { padding: 22px 20px; }
+  .agenda li { grid-template-columns: 70px minmax(0, 1fr); gap: 14px; }
+  .agenda .side { grid-column: 1 / -1; justify-items: start; grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; }
+  .row2 { grid-template-columns: minmax(0, 1fr); }
+  .deco { opacity: .55; }
+}
+</style>
+
+<header class="band">
+  <div class="mast">
+    <svg class="deco" viewBox="0 0 560 420" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#CDE87A" stroke-width="2" opacity=".5">
+        <path d="M420 400 C300 330 300 130 420 30 C540 130 540 330 420 400Z"/>
+        <path d="M420 400 L420 70"/>
+        <path d="M300 420 C240 370 240 270 300 220 C360 270 360 370 300 420Z"/>
+        <circle cx="470" cy="300" r="120"/>
+        <circle cx="470" cy="300" r="84"/>
+      </g>
+      <circle cx="120" cy="90" r="9" fill="#CDE87A" opacity=".8"/>
+      <circle cx="520" cy="60" r="6" fill="#62C08D" opacity=".9"/>
+    </svg>
+    <div class="wrap">
+      <div class="topline">
+        <span class="label">SMK Perdana Surabaya · Edisi 11 · November 2026</span>
+        <button class="theme-btn" id="theme-toggle" type="button">Mode gelap</button>
+      </div>
+      <div class="masthead">
+        <span class="kicker">SMK Perdana Surabaya</span>
+        <h1><span class="o">Media</span><span class="s">Perdana</span></h1>
+        <p class="tag">Kabar, karya, dan suara siswa dari lingkungan sekolah kita.</p>
+      </div>
+      <nav class="nav" aria-label="Navigasi utama">
+        <a href="#berita">Berita</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#karya">Karya Siswa</a>
+        <a href="#redaksi">Redaksi</a>
+        <a href="#kirim">Kirim Karya</a>
+      </nav>
+    </div>
+  </div>
+  <div class="ticker" aria-label="Judul terbaru">
+    <span class="lead">Terkini</span>
+    <div class="view"><div class="track" id="track"></div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="utama" style="padding-top: 36px">
+    <div class="hero" id="hero"></div>
+  </section>
+
+  <section id="berita">
+    <div class="sec-head">
+      <h2><span class="mk">Berita</span></h2>
+      <p>Pilih rubrik atau cari kata kunci.</p>
+    </div>
+    <div class="toolbar">
+      <div class="search">
+        <label for="cari" class="label" style="display:block; margin-bottom:6px; color: var(--muted)">Cari tulisan</label>
+        <input id="cari" type="search" placeholder="Contoh: perpustakaan, debat, sampah" autocomplete="off">
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Rubrik"></div>
+    </div>
+    <p class="count" id="count" aria-live="polite"></p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="agenda">
+    <div class="sec-head">
+      <h2><span class="mk">Agenda</span> Sekolah</h2>
+      <p>Kegiatan yang akan datang.</p>
+    </div>
+    <ul class="agenda" id="agenda-list"></ul>
+  </section>
+
+  <section id="karya">
+    <div class="sec-head">
+      <h2><span class="mk">Karya</span> Siswa</h2>
+      <p>Puisi, cerita mini, dan opini dari kelas-kelas kita.</p>
+    </div>
+    <div class="works" id="works"></div>
+  </section>
+
+  <section id="redaksi">
+    <div class="sec-head">
+      <h2><span class="mk">Redaksi</span></h2>
+      <p>Tim di balik Media Perdana.</p>
+    </div>
+    <div class="team" id="team"></div>
+  </section>
+
+  <section id="kirim">
+    <div class="sec-head">
+      <h2><span class="mk">Kirim</span> Karya</h2>
+      <p>Tulisanmu bisa terbit di edisi berikutnya.</p>
+    </div>
+    <div class="send">
+      <form id="send-form" novalidate>
+        <div class="row2">
+          <div class="field">
+            <label for="f-nama">Nama</label>
+            <input id="f-nama" type="text" autocomplete="off" placeholder="Nama lengkap">
+          </div>
+          <div class="field">
+            <label for="f-kelas">Kelas</label>
+            <input id="f-kelas" type="text" autocomplete="off" placeholder="Contoh: XI TKJ 2">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f-judul">Judul</label>
+            <input id="f-judul" type="text" autocomplete="off" placeholder="Judul tulisanmu">
+          </div>
+          <div class="field">
+            <label for="f-rubrik">Rubrik</label>
+            <select id="f-rubrik">
+              <option>Puisi</option>
+              <option>Cerita mini</option>
+              <option>Opini</option>
+              <option>Berita kegiatan</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-isi">Isi tulisan</label>
+          <textarea id="f-isi" rows="6" placeholder="Tulis atau tempel karyamu di sini"></textarea>
+        </div>
+        <button class="btn" type="submit">Siapkan naskah</button>
+        <p id="form-error" role="alert" style="font-size: 14px" hidden></p>
+      </form>
+      <div class="how">
+        <h3 style="font-size: 24px">Cara mengirim</h3>
+        <ol>
+          <li>Isi formulir di samping, lalu tekan Siapkan naskah.</li>
+          <li>Salin naskah yang muncul.</li>
+          <li>Kirim ke alamat redaksi: <span class="mail">redaksi@sekolahmu.sch.id</span> (alamat contoh, ganti dengan alamat resmi SMK Perdana Surabaya).</li>
+        </ol>
+        <div class="result" id="result" hidden>
+          <pre id="result-text"></pre>
+          <button class="btn alt" id="copy-btn" type="button">Salin naskah</button>
+          <p id="copy-note" style="font-size: 14px; color: var(--muted)" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+    <p class="sample-note">Nama redaksi, berita, dan agenda di halaman ini hanya contoh. Ganti dengan data SMK Perdana Surabaya.</p>
+  </section>
+</main>
+
+<footer class="band">
+  <div class="wrap">
+    <div class="big">Media <span>Perdana</span></div>
+    <div class="small">
+      <span>Media publikasi SMK Perdana Surabaya · dikelola oleh tim jurnalistik siswa</span>
+      <span>Edisi 11 · November 2026</span>
+    </div>
+  </div>
+</footer>
+
+<div class="reader" id="reader" hidden role="dialog" aria-modal="true" aria-labelledby="reader-title">
+  <article class="paper">
+    <div class="hd" id="reader-art"><button class="btn alt close" id="reader-close" type="button">Tutup</button></div>
+    <div class="in">
+      <span class="c" id="reader-cat"></span>
+      <h2 id="reader-title"></h2>
+      <p class="byline" id="reader-by"></p>
+      <div class="body" id="reader-body"></div>
+    </div>
+  </article>
+</div>
+
+<script>
+var ARTICLES = [
+  { id: 1, cat: "Warta Sekolah", title: "Perpustakaan Buka Sampai Sore, Pinjam Buku Cukup Pindai Kode QR", date: "12 Nov 2026", author: "Tim Redaksi",
+    excerpt: "Mulai pekan ini perpustakaan melayani siswa hingga pukul 16.00 dan peminjaman tidak lagi memakai kartu kertas.",
+    body: ["Mulai Senin pekan ini, perpustakaan sekolah buka sampai pukul 16.00. Jam tambahan ini dibuat supaya siswa yang pulang setelah ekstrakurikuler tetap bisa meminjam dan mengembalikan buku.",
+           "Peminjaman kini memakai kode QR yang ditempel di sampul buku. Siswa cukup memindai kode itu bersama petugas, dan masa pinjam otomatis tercatat selama dua minggu.",
+           "Petugas perpustakaan mengajak siswa mengusulkan judul baru lewat kotak saran di dekat pintu. Usulan terbanyak akan dibelikan pada awal semester genap."] },
+  { id: 2, cat: "Prestasi", title: "Tim Debat Sekolah Melaju ke Final Tingkat Kota", date: "10 Nov 2026", author: "Reporter Prestasi",
+    excerpt: "Tiga siswa kelas XI mengalahkan empat sekolah lain di babak semifinal dengan mosi tentang teknologi di ruang kelas.",
+    body: ["Tim debat sekolah memastikan tempat di final tingkat kota setelah menang di babak semifinal akhir pekan lalu. Mosi yang diperdebatkan menyangkut penggunaan gawai di dalam kelas.",
+           "Pembina tim mengatakan latihan dilakukan dua kali seminggu sejak awal semester. Anggota tim bergantian menjadi pembicara pertama, kedua, dan penutup agar semua terbiasa di setiap posisi.",
+           "Final akan digelar bulan depan. Siswa yang ingin menyaksikan langsung dapat mendaftar ke OSIS untuk ikut rombongan suporter."] },
+  { id: 3, cat: "Lingkungan", title: "Bank Sampah Kelas Kumpulkan 420 Kilogram Plastik dalam Sebulan", date: "8 Nov 2026", author: "Reporter Lingkungan",
+    excerpt: "Kelas X dan XI berlomba menyetor botol dan kemasan plastik. Hasil tabungan akan dipakai membeli tanaman untuk taman depan.",
+    body: ["Program bank sampah kelas berhasil mengumpulkan 420 kilogram plastik selama Oktober. Setiap kelas menimbang sampahnya tiap Jumat dan mencatatnya di papan pengumuman.",
+           "Hasil penjualan dikelola bendahara kelas dan sebagian disumbangkan untuk membeli bibit tanaman. Kelas dengan setoran terbanyak akan menerima piala bergilir.",
+           "Pengelola program meminta siswa memilah botol bersih dan kering sebelum disetor, supaya harga jualnya lebih baik."] },
+  { id: 4, cat: "Ekskul", title: "Ekskul Jurnalistik Buka Pendaftaran Reporter Baru", date: "6 Nov 2026", author: "Tim Redaksi",
+    excerpt: "Tidak perlu pengalaman. Calon reporter akan dilatih menulis berita, wawancara, dan memotret kegiatan sekolah.",
+    body: ["Tim jurnalistik membuka pendaftaran anggota baru untuk semester genap. Pendaftaran terbuka bagi siswa kelas X sampai XI tanpa seleksi tertulis.",
+           "Anggota baru akan mengikuti pelatihan dasar: menulis berita singkat, teknik wawancara, dan etika mengambil foto di lingkungan sekolah.",
+           "Pendaftar cukup membawa satu contoh tulisan pendek, boleh berupa catatan harian atau ulasan buku, ke ruang redaksi pada jam istirahat."] },
+  { id: 5, cat: "Opini", title: "Kenapa Kita Perlu Istirahat dari Layar Saat Belajar", date: "5 Nov 2026", author: "Nadia Rahma, XII",
+    excerpt: "Belajar daring memudahkan banyak hal, tetapi mata dan konsentrasi kita butuh jeda yang teratur.",
+    body: ["Banyak tugas sekarang dikerjakan lewat laptop atau ponsel. Setelah dua jam menatap layar, mata terasa pegal dan kepala sulit diajak berpikir.",
+           "Cara sederhana yang bisa dicoba adalah aturan 20-20-20: setiap 20 menit, lihat benda yang jaraknya sekitar 6 meter selama 20 detik. Jeda kecil seperti ini membantu mata beristirahat.",
+           "Sekolah juga bisa membantu dengan memberi tugas yang tidak selalu menuntut layar, misalnya membaca buku cetak atau membuat catatan tangan."] },
+  { id: 6, cat: "Warta Sekolah", title: "Jadwal Ujian Akhir Semester Ganjil Sudah Terbit", date: "4 Nov 2026", author: "Tim Redaksi",
+    excerpt: "Ujian dimulai awal Desember. Jadwal lengkap dan tata tertib ruang ujian ditempel di papan pengumuman utama.",
+    body: ["Panitia ujian telah menerbitkan jadwal Ujian Akhir Semester Ganjil. Ujian berlangsung selama dua pekan, dengan dua mata pelajaran setiap hari.",
+           "Siswa diminta membawa kartu ujian dan alat tulis sendiri. Ponsel harus dititipkan di depan ruang ujian sebelum pengawas masuk.",
+           "Bagi siswa yang berhalangan karena sakit, surat keterangan dokter perlu diserahkan ke wali kelas paling lambat sehari sebelum ujian."] },
+  { id: 7, cat: "Prestasi", title: "Siswi Kelas XI Raih Juara Harapan Lomba Cipta Puisi", date: "2 Nov 2026", author: "Reporter Prestasi",
+    excerpt: "Puisinya bercerita tentang pasar pagi di kampung halaman dan dinilai juri hidup oleh detail sehari-hari.",
+    body: ["Seorang siswi kelas XI meraih juara harapan dalam lomba cipta puisi tingkat kota. Ia menulis puisi tentang suasana pasar pagi di kampung halamannya.",
+           "Menurut juri, kekuatan karyanya ada pada detail kecil yang dekat dengan keseharian. Ia mengaku menulis dari catatan yang dikumpulkan selama liburan.",
+           "Guru bahasa Indonesia mengajak siswa lain ikut lomba berikutnya dan menawarkan bimbingan menulis setiap Kamis sore."] },
+  { id: 8, cat: "Lingkungan", title: "Kebun Sekolah Panen Perdana Sayur Hidroponik", date: "1 Nov 2026", author: "Reporter Lingkungan",
+    excerpt: "Selada dan kangkung hasil rakitan siswa kelas X dibagikan ke guru dan petugas kebersihan.",
+    body: ["Kebun hidroponik di belakang laboratorium akhirnya panen. Selada dan kangkung yang ditanam sejak September dipetik bersama oleh siswa kelas X.",
+           "Sebagian hasil panen dibagikan ke guru dan petugas kebersihan, sisanya dipakai untuk praktik memasak di mata pelajaran prakarya.",
+           "Tim kebun berencana menambah rak tanam pada semester depan dan membuka jadwal piket bagi siswa yang ingin ikut merawat."] }
+];
+var AGENDA = [
+  { y: 2026, m: 10, d: 25, t: "Peringatan Hari Guru Nasional", p: "Upacara pagi dan penampilan kelas, lapangan utama", tag: "Upacara" },
+  { y: 2026, m: 10, d: 27, t: "Final Debat Antar Sekolah", p: "Aula kota, rombongan berangkat pukul 07.00", tag: "Lomba" },
+  { y: 2026, m: 10, d: 30, t: "Awal Ujian Akhir Semester", p: "Ruang kelas sesuai kartu ujian", tag: "Akademik" },
+  { y: 2026, m: 11, d: 12, t: "Pembagian Laporan Hasil Belajar", p: "Bersama wali murid, di kelas masing-masing", tag: "Akademik" },
+  { y: 2026, m: 11, d: 19, t: "Pentas Seni Akhir Tahun", p: "Aula sekolah, terbuka untuk orang tua", tag: "Seni" }
+];
+var MONTHS = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+var WORKS = [
+  { kind: "Puisi", title: "Bel Terakhir", text: "Bel berbunyi, kursi bergeser,\nlangkah kita menuju gerbang.\nSore itu kita pulang\nmembawa tugas dan tawa yang sama.", by: "Rani Putri, X" },
+  { kind: "Cerita mini", title: "Kunci di Laci Meja", text: "Pagi itu Dimas menemukan kunci kecil di laci mejanya. Tidak ada nama, tidak ada gembok yang cocok. Seminggu kemudian ia sadar kunci itu milik lemari buku kelas yang selama ini terkunci.", by: "Dimas Aryo, XI" },
+  { kind: "Opini singkat", title: "Kantin Tanpa Plastik", text: "Kalau tiap siswa membawa botol minum sendiri, kita bisa mengurangi ratusan gelas plastik setiap pekan. Mulainya dari kebiasaan kecil di kelas masing-masing.", by: "Salsa Nuraini, XII" }
+];
+var TEAM = [
+  { r: "Pembina", n: "Ibu Sari Wulandari, S.Pd.", i: "SW" },
+  { r: "Pemimpin Redaksi", n: "Alya Putri", i: "AP" },
+  { r: "Redaktur Pelaksana", n: "Raka Pratama", i: "RP" },
+  { r: "Reporter", n: "Nadia Rahma", i: "NR" },
+  { r: "Fotografer", n: "Bagas Setiawan", i: "BS" },
+  { r: "Desain & Tata Letak", n: "Mira Anggraini", i: "MA" }
+];
+var CATS = ["Semua", "Warta Sekolah", "Prestasi", "Ekskul", "Lingkungan", "Opini"];
+var state = { cat: "Semua", q: "" };
+var lastFocus = null;
+
+function $(id) { return document.getElementById(id); }
+function mins(a) { var w = a.body.join(" ").split(/\s+/).length; return Math.max(1, Math.round(w / 180)); }
+
+/* Ilustrasi per rubrik */
+function rays() {
+  var s = "";
+  for (var i = 0; i < 14; i++) {
+    var a = (i / 14) * Math.PI * 2, c = Math.cos(a), n = Math.sin(a);
+    s += '<line class="s1" x1="' + (200 + c * 64).toFixed(1) + '" y1="' + (112 + n * 64).toFixed(1) + '" x2="' + (200 + c * 104).toFixed(1) + '" y2="' + (112 + n * 104).toFixed(1) + '"/>';
+  }
+  return s;
+}
+var ART = {
+  "Warta Sekolah": { k: "ws", s: '<rect class="a1" x="70" y="40" width="150" height="150" rx="10" transform="rotate(-8 145 115)"/><rect class="a3" x="140" y="30" width="150" height="150" rx="10" transform="rotate(6 215 105)"/><rect class="a2" x="162" y="62" width="90" height="10"/><rect class="a1" x="162" y="88" width="110" height="8"/><rect class="a1" x="162" y="108" width="100" height="8"/><rect class="a1" x="162" y="128" width="70" height="8"/><circle class="a2" cx="330" cy="190" r="24"/>' },
+  "Prestasi": { k: "pr", s: '<circle class="a1" cx="200" cy="112" r="46"/><circle class="a3" cx="200" cy="112" r="24"/>' + rays() + '<circle class="a2" cx="60" cy="190" r="22"/><circle class="a2" cx="350" cy="44" r="14"/>' },
+  "Ekskul": { k: "ek", s: '<circle class="a1" cx="90" cy="70" r="46"/><circle class="a3" cx="190" cy="140" r="58"/><circle class="a2" cx="300" cy="70" r="40"/><circle class="a1" cx="320" cy="170" r="26"/><circle class="a3" cx="40" cy="180" r="18"/><circle class="a2" cx="130" cy="200" r="12"/>' },
+  "Lingkungan": { k: "li", s: '<path class="a1" d="M200 210 C110 165 110 75 200 22 C290 75 290 165 200 210Z"/><path class="s3" d="M200 205 L200 55"/><path class="a2" d="M90 200 C60 170 60 130 90 105 C120 130 120 170 90 200Z"/><path class="a3" d="M312 200 C282 170 282 130 312 105 C342 130 342 170 312 200Z"/>' },
+  "Opini": { k: "op", s: '<rect class="a1" x="56" y="42" width="196" height="92" rx="16"/><polygon class="a1" points="96,134 96,172 136,134"/><rect class="a0" x="82" y="68" width="120" height="8" rx="4" opacity=".55"/><rect class="a0" x="82" y="90" width="90" height="8" rx="4" opacity=".55"/><rect class="a2" x="168" y="96" width="176" height="88" rx="16"/><polygon class="a2" points="300,184 300,212 268,184"/><rect class="a0" x="192" y="122" width="110" height="8" rx="4" opacity=".6"/><rect class="a0" x="192" y="144" width="70" height="8" rx="4" opacity=".6"/>' }
+};
+function art(cat) {
+  var a = ART[cat] || ART["Warta Sekolah"];
+  return '<svg class="art cat-' + a.k + '" viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="a0" width="400" height="225"/>' + a.s + '</svg>';
+}
+
+function renderTicker() {
+  var set = ARTICLES.map(function (a) { return "<span>" + a.title + "</span>"; }).join("");
+  $("track").innerHTML = '<div class="set">' + set + '</div><div class="set dup" aria-hidden="true">' + set + '</div>';
+}
+
+function renderHero() {
+  var f = ARTICLES[0], rest = ARTICLES.slice(1, 5), h = "";
+  h += '<button class="feature" type="button" data-open="' + f.id + '"><div class="bgart">' + art(f.cat) + '</div>' +
+       '<div class="in"><span class="pill">Berita Utama · ' + f.cat + '</span>' +
+       '<h2>' + f.title + '</h2><p>' + f.excerpt + '</p>' +
+       '<span class="meta">' + f.date + ' · ' + f.author + ' · ' + mins(f) + ' menit baca</span></div></button>';
+  h += '<aside class="latest"><h3>Terbaru</h3><ul>';
+  rest.forEach(function (a) {
+    h += '<li><button type="button" data-open="' + a.id + '"><span class="th">' + art(a.cat) + '</span>' +
+         '<span><span class="c">' + a.cat + '</span><span class="t">' + a.title + '</span><span class="d">' + a.date + '</span></span></button></li>';
+  });
+  h += '</ul></aside>';
+  $("hero").innerHTML = h;
+}
+
+function renderChips() {
+  $("chips").innerHTML = CATS.map(function (c) {
+    return '<button class="chip" type="button" data-cat="' + c + '" aria-pressed="' + (state.cat === c) + '">' + c + '</button>';
+  }).join("");
+}
+
+function renderGrid() {
+  var q = state.q.trim().toLowerCase();
+  var list = ARTICLES.filter(function (a) {
+    var okCat = state.cat === "Semua" || a.cat === state.cat;
+    var okQ = !q || (a.title + " " + a.excerpt + " " + a.cat).toLowerCase().indexOf(q) !== -1;
+    return okCat && okQ;
+  });
+  $("count").textContent = "Menampilkan " + list.length + " dari " + ARTICLES.length + " tulisan";
+  if (!list.length) {
+    $("grid").innerHTML = '<div class="empty">Belum ada tulisan yang cocok. Coba kata kunci lain atau pilih rubrik Semua.</div>';
+    return;
+  }
+  $("grid").innerHTML = list.map(function (a) {
+    return '<article class="card"><div class="thumb">' + art(a.cat) + '<span class="pill">' + a.cat + '</span></div>' +
+           '<div class="txt"><h3><button type="button" data-open="' + a.id + '">' + a.title + '</button></h3>' +
+           '<p>' + a.excerpt + '</p>' +
+           '<span class="meta">' + a.date + ' · ' + a.author + '</span></div></article>';
+  }).join("");
+}
+
+function rel(e) {
+  var t = new Date(); t = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  var n = Math.round((new Date(e.y, e.m, e.d) - t) / 86400000);
+  if (n < 0) return "Sudah lewat";
+  if (n === 0) return "Hari ini";
+  if (n === 1) return "Besok";
+  return n + " hari lagi";
+}
+
+function renderStatic() {
+  $("agenda-list").innerHTML = AGENDA.map(function (e) {
+    return '<li><div class="date"><b>' + e.d + '</b><span>' + MONTHS[e.m] + '</span></div>' +
+           '<div><h3>' + e.t + '</h3><p>' + e.p + '</p></div>' +
+           '<div class="side"><span class="tag">' + e.tag + '</span><span class="rel">' + rel(e) + '</span></div></li>';
+  }).join("");
+  $("works").innerHTML = WORKS.map(function (w, i) {
+    return '<article class="work w' + (i % 3) + '"><span class="label">' + w.kind + '</span><h3>' + w.title + '</h3>' +
+           '<p class="text">' + w.text + '</p><p class="by">' + w.by + '</p></article>';
+  }).join("");
+  $("team").innerHTML = TEAM.map(function (t, i) {
+    return '<div class="member"><span class="avatar av' + (i % 3) + '" aria-hidden="true">' + t.i + '</span>' +
+           '<div><div class="role">' + t.r + '</div><div class="name">' + t.n + '</div></div></div>';
+  }).join("");
+}
+
+function openArticle(id) {
+  var a = ARTICLES.filter(function (x) { return x.id === id; })[0];
+  if (!a) return;
+  lastFocus = document.activeElement;
+  var hd = $("reader-art");
+  var closeBtn = $("reader-close");
+  hd.innerHTML = art(a.cat);
+  hd.appendChild(closeBtn);
+  $("reader-cat").textContent = a.cat;
+  $("reader-title").textContent = a.title;
+  $("reader-by").textContent = a.date + " · " + a.author + " · " + mins(a) + " menit baca";
+  $("reader-body").innerHTML = a.body.map(function (p) { return "<p>" + p + "</p>"; }).join("");
+  $("reader").hidden = false;
+  document.body.classList.add("lock");
+  $("reader").scrollTop = 0;
+  closeBtn.focus();
+}
+function closeArticle() {
+  $("reader").hidden = true;
+  document.body.classList.remove("lock");
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+document.addEventListener("click", function (e) {
+  var t = e.target.closest ? e.target.closest("[data-open]") : null;
+  if (t) { openArticle(Number(t.getAttribute("data-open"))); return; }
+  var c = e.target.closest ? e.target.closest("[data-cat]") : null;
+  if (c) { state.cat = c.getAttribute("data-cat"); renderChips(); renderGrid(); return; }
+  if (e.target === $("reader")) closeArticle();
+});
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("reader").hidden) closeArticle(); });
+$("reader-close").addEventListener("click", closeArticle);
+$("cari").addEventListener("input", function (e) { state.q = e.target.value; renderGrid(); });
+
+/* Tema */
+function currentTheme() {
+  var t = document.documentElement.getAttribute("data-theme");
+  if (t) return t;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+function syncThemeLabel() { $("theme-toggle").textContent = currentTheme() === "dark" ? "Mode terang" : "Mode gelap"; }
+$("theme-toggle").addEventListener("click", function () {
+  document.documentElement.setAttribute("data-theme", currentTheme() === "dark" ? "light" : "dark");
+  syncThemeLabel();
+});
+
+/* Form kirim karya */
+$("send-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var nama = $("f-nama").value.trim(), kelas = $("f-kelas").value.trim(), judul = $("f-judul").value.trim(), isi = $("f-isi").value.trim();
+  var err = $("form-error");
+  if (!nama || !kelas || !judul || !isi) {
+    err.textContent = "Lengkapi nama, kelas, judul, dan isi tulisan dulu, lalu tekan Siapkan naskah lagi.";
+    err.hidden = false;
+    $("result").hidden = true;
+    return;
+  }
+  err.hidden = true;
+  var naskah = "Rubrik: " + $("f-rubrik").value + "\nJudul: " + judul + "\nPenulis: " + nama + " (" + kelas + ")\n\n" + isi;
+  $("result-text").textContent = naskah;
+  $("copy-note").textContent = "";
+  $("result").hidden = false;
+});
+$("copy-btn").addEventListener("click", function () {
+  var txt = $("result-text").textContent;
+  function fallback() {
+    var r = document.createRange();
+    r.selectNodeContents($("result-text"));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    $("copy-note").textContent = "Naskah sudah terpilih. Salin dengan Ctrl+C atau tahan lama lalu pilih Salin.";
+  }
+  try {
+    navigator.clipboard.writeText(txt).then(function () { $("copy-note").textContent = "Naskah tersalin."; }, fallback);
+  } catch (x) { fallback(); }
+});
+
+renderTicker(); renderHero(); renderChips(); renderGrid(); renderStatic(); syncThemeLabel();
+</script>
